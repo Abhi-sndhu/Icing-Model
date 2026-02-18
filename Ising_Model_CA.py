@@ -23,6 +23,8 @@ J=1#1,0,-1    #Coupling strength, Ferro: 1e−20,Para: 1e-24, Antiferro: -1e-21
 B=0#External field, J dominates:0, WeakB: 0.01J, Strong B: 0.1J
 T=1.5#In natural units 1 to 3, Tc = 2.27    #(J/kB)*1e-100 #Temperature in Kelvin: (Transition : kB Tc ~ J)
 
+sweeps=100
+sweeps2=20
 ##########################################################################################################################################################################################
 def deltaE(i,j): #Change in energy if flip, deltaE=J(s)(sum of spins of all neighbours)-2B(s)
     sum_nspins = grid[(i-1)%Nx,j%Ny]+ grid[i%Nx,(j-1)%Ny]+grid[i%Nx,(j+1)%Ny]+ grid[(i+1)%Nx,j%Ny] 
@@ -83,7 +85,7 @@ for i in range(31):
     ax.set_title(f"B={B:.2f},T={T:.2f}")
     plt.draw()
     plt.pause(1e-10)
-    Mag,Chi,Energy,Cv,Mag_abs=result(grid,100)
+    Mag,Chi,Energy,Cv,Mag_abs=result(grid,sweeps)
     Mlst.append(Mag_abs)
     Tlst.append(T)
     Chilst.append(Chi)
@@ -109,7 +111,7 @@ for i in range(76):
        B-=0.03
     elif i<75:
         B+=0.03
-    Mag,Chi,Energy,Cv,Mag_abs=result(grid,20)
+    Mag,Chi,Energy,Cv,Mag_abs=result(grid,sweeps2)
     M2lst.append(Mag)
     Blst.append(B)
     print('Step:',i,'/ 75')
@@ -136,3 +138,4 @@ plt.plot(Tlst,Cvlst,marker='o',linestyle='-')
 plt.xlabel('Temp')
 plt.ylabel('Specific Heat Capacity')
 plt.show()
+
